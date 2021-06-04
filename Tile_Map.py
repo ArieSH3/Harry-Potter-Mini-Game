@@ -8,7 +8,9 @@
 	
 	TODO  : 
 		- Figure out how to set up different sprite blocks to create sensible terrain
-		-
+		- Figure out how to automatically create a tilemap grid (So far its manually drawn)
+		- Choose if tilemap will be sectioned and loaded as new instance when players walks(instanced) 
+			over or if it will be slowly loaded when the players moves around the map(dynamic)
 '''
 
 import pygame
