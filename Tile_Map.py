@@ -23,39 +23,90 @@
 					All of those will be manually created (not sure how yet) but they will represent a part
 					of Hogwarts for example and once you get out of one 128x128 part then you load in to 
 					another 128x128 part and same for the forests and other such environments.
+
+					LOADED IN CHUNKS SOMEHOW
 '''
 
 import pygame
 import sys
+import random
+from perlin_noise import PerlinNoise
 
-GREEN = (20 ,150,70 )
-BROWN = (200,140,70 )
-BLUE  = (50 ,150,170)
+GREEN      = (20 ,150,70 )
+BROWN      = (200,140,70 )
+BLUE  	   = (50 ,150,170)
+DARK_GREEN = (20 ,100,50)
+DARK_BLUE  = (30 ,130,170)
 
-grass = 0
-dirt  = 1
-water = 2
+grass  = 0
+dirt   = 1
+water  = 2
+forest = 3
+deep_water = 4
+
+pnoise = PerlinNoise(octaves = 14, seed = 1)
 
 colours = {
-			grass: GREEN,
-			dirt : BROWN,
-			water: BLUE
+			grass : GREEN,
+			dirt  : BROWN,
+			water : BLUE,
+			forest: DARK_GREEN,
+			deep_water: DARK_BLUE
 		}
-tilemap = [
-			[water,water,grass,grass,grass],
-			[water,grass,grass,grass,grass],
-			[grass,grass,grass,grass,dirt],
-			[dirt,grass,grass,dirt,dirt],
-			[dirt,dirt,grass,dirt,dirt]
-		]
+	# Original tilemap
+# tilemap = [
+# 			[water,water,grass,grass,grass],
+# 			[water,grass,grass,grass,grass],
+# 			[grass,grass,grass,grass,dirt],
+# 			[dirt,grass,grass,dirt,dirt],
+# 			[dirt,dirt,grass,dirt,dirt]
+# 		]
+		
 
-TILE_SIZE  = 50
-MAP_WIDTH  = 5
-MAP_HEIGHT = 5
+# #		Test tilemap
+# tile_num = 64
+# tilemap = []
+# # Creating randomly spread tile elements in tilemap
+# for i in range(tile_num):
+# 	tilemap.append([])
+# 	for j in range(tile_num):
+# 		# Chooses random number from 0 to 3(and 3) because there are 4 types of tiles
+# 		tilemap[i].append(random.randint(0, len(colours)-1))
+
+
+#		TEST TILEMAP 2
+noise_scale = 0.9
+tile_num = 128 # 64
+tilemap = []
+
+for i in range(tile_num):
+	nested_tile = []
+	for j in range(tile_num):
+		pic = pnoise((i/tile_num, j/tile_num))
+		if pic < -0.3: # 0.0:
+			nested_tile.append(deep_water)
+		elif pic < -0.1: # 0.0:
+			nested_tile.append(water)
+		elif pic < 0.03: # 0.0:
+			nested_tile.append(dirt)
+		elif pic < 0.25:
+			nested_tile.append(grass)
+		elif pic < 1:
+			nested_tile.append(forest)
+		# else:
+		# 	nested_tile.append(forest)
+		
+
+	tilemap.append(nested_tile)
+
+
+TILE_SIZE  =  8 # 15 # 50
+MAP_WIDTH  = len(tilemap[0]) # 5
+MAP_HEIGHT = len(tilemap)    # 5
 
 pygame.init()
 
-display_surface = pygame.display.set_mode((MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE))
+display_surface = pygame.display.set_mode((MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE))  #Fullscreen mode -   ((0,0), pygame.FULLSCREEN) 
 
 while True:
 	for event in pygame.event.get():
@@ -65,8 +116,8 @@ while True:
 
 		# Reset the display to default/base
 		# display_surface.fill((0,0,0))
-		for row in range(MAP_WIDTH):
-			for column in range(MAP_HEIGHT):
+		for row in range(MAP_HEIGHT):
+			for column in range(MAP_WIDTH):
 				colour = colours[tilemap[row][column]]
 				pygame.draw.rect(display_surface, colour, (column*TILE_SIZE, row*TILE_SIZE, TILE_SIZE, TILE_SIZE))
 
