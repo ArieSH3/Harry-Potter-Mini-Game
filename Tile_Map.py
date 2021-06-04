@@ -10,3 +10,50 @@
 		- Figure out how to set up different sprite blocks to create sensible terrain
 		-
 '''
+
+import pygame
+import sys
+
+GREEN = (20 ,150,70 )
+BROWN = (200,140,70 )
+BLUE  = (50 ,150,170)
+
+grass = 0
+dirt  = 1
+water = 2
+
+colours = {
+			grass: GREEN,
+			dirt : BROWN,
+			water: BLUE
+		}
+tilemap = [
+			[water,water,grass,grass,grass],
+			[water,grass,grass,grass,grass],
+			[grass,grass,grass,grass,dirt],
+			[dirt,grass,grass,dirt,dirt],
+			[dirt,dirt,grass,dirt,dirt]
+		]
+
+TILE_SIZE  = 50
+MAP_WIDTH  = 5
+MAP_HEIGHT = 5
+
+pygame.init()
+
+display_surface = pygame.display.set_mode((MAP_WIDTH*TILE_SIZE, MAP_HEIGHT*TILE_SIZE))
+
+while True:
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			pygame.quit()
+			sys.exit()
+
+		# Reset the display to default/base
+		# display_surface.fill((0,0,0))
+		for row in range(MAP_WIDTH):
+			for column in range(MAP_HEIGHT):
+				colour = colours[tilemap[row][column]]
+				pygame.draw.rect(display_surface, colour, (column*TILE_SIZE, row*TILE_SIZE, TILE_SIZE, TILE_SIZE))
+
+	pygame.display.update()				
