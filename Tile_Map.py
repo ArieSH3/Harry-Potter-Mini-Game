@@ -8,9 +8,21 @@
 	
 	TODO  : 
 		- Figure out how to set up different sprite blocks to create sensible terrain
+		
 		- Figure out how to automatically create a tilemap grid (So far its manually drawn)
-		- Choose if tilemap will be sectioned and loaded as new instance when players walks(instanced) 
-			over or if it will be slowly loaded when the players moves around the map(dynamic)
+		
+		- Choose if tilemap will be sectioned and loaded as new instance when player walks over(instanced) 
+			or if it will be slowly loaded when the players moves around the map(dynamic)
+				
+				*If dynamic(preferred) then choose if player will always be centered(like crosshair in FPS games)
+				 	on the map or if player can move to the edge of the map before more is loaded slowly
+
+				* Possibly create a big instanced map (eg. 128x128 tiles) and move dynamically in them while
+					still loading another instance of 128x128 once you get out of the initial one.
+
+					All of those will be manually created (not sure how yet) but they will represent a part
+					of Hogwarts for example and once you get out of one 128x128 part then you load in to 
+					another 128x128 part and same for the forests and other such environments.
 '''
 
 import pygame
