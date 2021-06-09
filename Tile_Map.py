@@ -37,21 +37,30 @@ BROWN      = (200,140,70 )
 BLUE  	   = (50 ,150,170)
 DARK_GREEN = (20 ,100,50)
 DARK_BLUE  = (30 ,130,170)
+WHITE	   = (255,255,255)
+BLACK      = (0  ,0  ,0  )
+GREY	   = (120,120,120)
 
 grass  = 0
 dirt   = 1
 water  = 2
 forest = 3
 deep_water = 4
+white = 5
+black = 6
+grey  = 7
 
-pnoise = PerlinNoise(octaves = 14, seed = 1)
+pnoise = PerlinNoise(octaves = 10, seed = 1)
 
 colours = {
 			grass : GREEN,
 			dirt  : BROWN,
 			water : BLUE,
 			forest: DARK_GREEN,
-			deep_water: DARK_BLUE
+			deep_water: DARK_BLUE,
+			white : WHITE,
+			black : BLACK,
+			grey  : GREY
 		}
 	# Original tilemap
 # tilemap = [
@@ -63,7 +72,7 @@ colours = {
 # 		]
 		
 
-# #		Test tilemap
+# #		Test tilemap (Random)
 # tile_num = 64
 # tilemap = []
 # # Creating randomly spread tile elements in tilemap
@@ -74,10 +83,11 @@ colours = {
 # 		tilemap[i].append(random.randint(0, len(colours)-1))
 
 
-#		TEST TILEMAP 2
-noise_scale = 0.9
+#		TEST TILEMAP 2 (Perlin Noise)
+noise_scale = 0.1
 tile_num = 128 # 64
 tilemap = []
+
 
 for i in range(tile_num):
 	nested_tile = []
@@ -89,14 +99,19 @@ for i in range(tile_num):
 			nested_tile.append(water)
 		elif pic < 0.03: # 0.0:
 			nested_tile.append(dirt)
-		elif pic < 0.25:
+		elif pic < 0.17:
 			nested_tile.append(grass)
-		elif pic < 1:
+		else:
 			nested_tile.append(forest)
-		# else:
-		# 	nested_tile.append(forest)
-		
 
+			# Grey scale test
+		# if pic < -0.10:
+		# 	nested_tile.append(white)
+		# elif pic < 0.10:
+		# 	nested_tile.append(grey)
+		# else:
+		# 	nested_tile.append(black)
+		
 	tilemap.append(nested_tile)
 
 
